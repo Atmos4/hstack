@@ -42,7 +42,7 @@ app.post(
   }
 );
 
-app.delete("/todos/delete/:id", async (c) => {
+app.delete("/todos/delete/:id{[0-9]+}", async (c) => {
   await drizzle(c.env.DB)
     .delete(todos)
     .where(eq(todos.id, parseInt(c.req.param().id)))
@@ -50,7 +50,7 @@ app.delete("/todos/delete/:id", async (c) => {
   return c.html("");
 });
 
-app.post("/todos/toggle/:id", async (c) => {
+app.post("/todos/toggle/:id{[0-9]+}", async (c) => {
   const toggleId = parseInt(c.req.param().id);
   const db = drizzle(c.env.DB);
   const oldTodo = await db
@@ -58,13 +58,15 @@ app.post("/todos/toggle/:id", async (c) => {
     .from(todos)
     .where(eq(todos.id, toggleId))
     .get();
-  const newTodo = await db
-    .update(todos)
-    .set({ checked: !oldTodo?.checked })
-    .where(eq(todos.id, toggleId))
-    .returning()
-    .get();
-  return c.html(<TodoItem {...newTodo} />);
+  if (oldTodo) {
+    const newTodo = await db
+      .update(todos)
+      .set({ checked: !oldTodo?.checked })
+      .where(eq(todos.id, toggleId))
+      .returning()
+      .get();
+    return c.html(<TodoItem {...newTodo} />);
+  }
 });
 
 export default app;
