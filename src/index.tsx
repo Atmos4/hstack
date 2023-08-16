@@ -5,12 +5,15 @@ import { drizzle } from "drizzle-orm/d1";
 import { todos } from "./schema";
 import { eq } from "drizzle-orm";
 import { Layout, MainPage, TodoItem } from "./components";
+import { serveStatic } from "hono/cloudflare-workers";
 
 type Env = {
   DB: D1Database;
 };
 
 const app = new Hono<{ Bindings: Env }>();
+
+app.get("/favicon.ico", serveStatic({ path: "./favicon.ico" }));
 
 app.get("/", async (c) => {
   const data = await drizzle(c.env.DB).select().from(todos).all();

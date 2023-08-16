@@ -2,6 +2,9 @@ name = "hstack"
 main= "src/index.tsx"
 compatibility_date = "2023-01-01"
 
+[site]
+bucket = "./assets"
+
 [[d1_databases]] # replace this with your own
 binding = "DB"
 database_name = "hstack-db"
