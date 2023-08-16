@@ -71,6 +71,7 @@ export function MainPage(props: { todos: Todo[] }) {
           <button>add</button>
         </form>
       </div>
+      <a href="https://github.com/Atmos4/hstack">source code</a>
     </body>
   );
 }
