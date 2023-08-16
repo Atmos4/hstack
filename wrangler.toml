@@ -1,0 +1,11 @@
+name = "hstack"
+main= "src/index.tsx"
+compatibility_date = "2023-01-01"
+
+[[d1_databases]] # replace this with your own
+binding = "DB"
+database_name = "hstack-db"
+database_id = "9d39dde3-6899-45cf-8cb8-803e14d132d9"
+
+migrations_dir = "migrations"
+

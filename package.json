@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "d1:list": "wrangler d1 migrations list DB",
+    "d1:apply": "wrangler d1 migrations apply DB",
+    "d1:local:list": "wrangler d1 migrations list DB --local",
+    "d1:local:apply": "wrangler d1 migrations apply DB --local",
+    "drizzle:generate": "drizzle-kit generate:sqlite"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.1.5",
+    "drizzle-orm": "^0.28.2",
+    "hono": "^3.4.1",
+    "zod": "^3.22.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230628.0",
+    "drizzle-kit": "^0.19.12",
+    "wrangler": "^3.1.2"
+  }
+}
