@@ -1,72 +1,43 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { z } from "zod";
 import { drizzle } from "drizzle-orm/d1";
 import { todos } from "./schema";
-import { eq } from "drizzle-orm";
-import { Layout, MainPage, TodoItem } from "./components";
+import { AuthControl, Layout, MainPage } from "./components";
 import { serveStatic } from "hono/cloudflare-workers";
+import { loginController } from "./controllers/login";
+import { todoController } from "./controllers/todo";
+import { authMiddleware } from "./lucia";
+import { eq } from "drizzle-orm";
 
-type Env = {
-  DB: D1Database;
-};
-
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<Env>();
 
 app.get("/favicon.ico", serveStatic({ path: "./favicon.ico" }));
+app.get("/style.css", serveStatic({ path: "./unocss.css" }));
 
+app.route("/", loginController);
+
+app.use("*", authMiddleware);
 app.get("/", async (c) => {
-  const data = await drizzle(c.env.DB).select().from(todos).all();
+  const session = c.get("session");
+  if (!session) {
+    return c.html(
+      <Layout>
+        <AuthControl />
+      </Layout>
+    );
+  }
+  const data = await drizzle(c.env.DB)
+    .select()
+    .from(todos)
+    .where(eq(todos.userId, session.user.userId))
+    .all();
   return c.html(
     <Layout>
+      <AuthControl username={session.user.githubUsername} />
       <MainPage todos={data} />
     </Layout>
   );
 });
 
-app.post(
-  "/new-todo",
-  zValidator(
-    "form",
-    z.object({
-      title: z.string().nonempty().max(40),
-    })
-  ),
-  async (c) => {
-    const newTodo = await drizzle(c.env.DB)
-      .insert(todos)
-      .values(c.req.valid("form"))
-      .returning()
-      .get();
-    return c.html(<TodoItem {...newTodo} />);
-  }
-);
-
-app.delete("/todos/delete/:id{[0-9]+}", async (c) => {
-  await drizzle(c.env.DB)
-    .delete(todos)
-    .where(eq(todos.id, parseInt(c.req.param().id)))
-    .run();
-  return c.html("");
-});
-
-app.post("/todos/toggle/:id{[0-9]+}", async (c) => {
-  const toggleId = parseInt(c.req.param().id);
-  const db = drizzle(c.env.DB);
-  const oldTodo = await db
-    .select()
-    .from(todos)
-    .where(eq(todos.id, toggleId))
-    .get();
-  if (oldTodo) {
-    const newTodo = await db
-      .update(todos)
-      .set({ checked: !oldTodo?.checked })
-      .where(eq(todos.id, toggleId))
-      .returning()
-      .get();
-    return c.html(<TodoItem {...newTodo} />);
-  }
-});
+app.route("/todo", todoController);
 
 export default app;

@@ -8,7 +8,7 @@ bucket = "./assets"
 [[d1_databases]] # replace this with your own
 binding = "DB"
 database_name = "hstack-db"
-database_id = "9d39dde3-6899-45cf-8cb8-803e14d132d9"
+database_id = "6a765098-d238-45c4-a7fd-9d796be20b52"
 
 migrations_dir = "migrations"
 
