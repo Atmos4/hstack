@@ -2,3 +2,4 @@
 /.wrangler
 .env
 .dev.vars
+/assets/style.css

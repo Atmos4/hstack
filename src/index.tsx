@@ -11,7 +11,7 @@ import { eq } from "drizzle-orm";
 const app = new Hono<Env>();
 
 app.get("/favicon.ico", serveStatic({ path: "./favicon.ico" }));
-app.get("/style.css", serveStatic({ path: "./unocss.css" }));
+app.get("/style.css", serveStatic({ path: "./style.css" }));
 
 app.route("/", loginController);
 

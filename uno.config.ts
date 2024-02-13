@@ -12,14 +12,14 @@ export default defineConfig({
   cli: {
     entry: {
       patterns: ["src/**/*.{ts,tsx}"],
-      outFile: "assets/unocss.css",
+      outFile: "assets/style.css",
     },
   },
   presets: [
     presetUno(),
     presetTypography(),
     presetIcons(),
-    presetDaisy({ themes }),
+    presetDaisy({ themes, darkTheme: "black" }),
   ],
   transformers: [transformerVariantGroup()],
 });

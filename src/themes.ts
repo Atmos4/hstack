@@ -1,1 +1,1 @@
-export const themes = ["lofi", "black"];
+export const themes = ["lofi", "black", "cyberpunk"];
