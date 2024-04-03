@@ -10,8 +10,8 @@ This example uses:
 
 - [cloudflare workers](https://developers.cloudflare.com/workers/)
 - [cloudflare d1](https://developers.cloudflare.com/d1/)
-- some [hyperscript](https://hyperscript.org/)
-- [simple.css](https://simplecss.org/) (yes i'm lazy so no tailwind)
+- [daisyUI](https://daisyui.com/)
+- [unocss](https://unocss.dev/)
 
 ## demo
 
@@ -24,7 +24,7 @@ Each request is handled by `hono` on a `cloudflare worker`, fetches `d1` data wi
 First, create a Cloudflare account. Then:
 
 - clone repo
-- `npm install`
+- `npm install` (or whatever package manager you prefer)
 - create d1 database
 
 ```bash
@@ -79,4 +79,4 @@ If you want to suppress d1 warnings, create a `.env` file based on `.env.example
 
 If you struggle to understand this example, the [official d1 tutorial](https://developers.cloudflare.com/d1/tutorials/build-a-comments-api/) uses Hono too. It is very similar to what I have built and describes the steps to create your first d1 database very well.
 
-The core of this stack is Hono + HTMX, hence the name. The rest of what I have used here can be replaced what something else.
+The core of this stack is Hono + HTMX, hence the name. The rest of what I have used here can be replaced what something else. Examples: the bun runtime, TailwindCSS instead of Uno, no ORM, Turso instead of D1, etc.
