@@ -10,7 +10,6 @@ export function Layout({ children }: { children?: any }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>h stack</title>
         <script src="https://unpkg.com/htmx.org@1.9.3"></script>
-        <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css"
@@ -116,7 +115,7 @@ export function MainPage(props: { todos: Todo[] }) {
         hx-post="/todo/new"
         hx-swap="beforeend"
         hx-target="previous article"
-        _="on submit target.reset()"
+        hx-on:submit="this.querySelector('input').value=''"
         class="join w-full"
       >
         <input
